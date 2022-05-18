@@ -6,7 +6,7 @@ const InterviewerList = ({ interviewers, interviewer, setInterviewer }) => {
   // const [interviewer, setInterviewer] = useState(); //use id as state value
 
   const displayListItems = interviewers.map((item) => (
-    <InterviewerListItem id={item.id} name={item.name} avatar={item.avatar} setInterviewer={setInterviewer} selected={item.id === interviewer} />
+    <InterviewerListItem name={item.name} avatar={item.avatar} setInterviewer={() => setInterviewer(item.id)} selected={item.id === interviewer} />
   ));
 
   return (
