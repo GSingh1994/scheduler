@@ -7,6 +7,7 @@ import DayListItem from 'components/DayListItem.jsx';
 import DayList from 'components/DayList.jsx';
 import InterviewerListItem from 'components/InterviewerListItem.jsx';
 import InterviewerList from 'components/InterviewerList.jsx';
+import Appointment from 'components/Appointment';
 
 storiesOf('Button', module)
   .addParameters({
@@ -93,3 +94,10 @@ storiesOf('InterviewerList', module)
   .add('Initial', () => <InterviewerList interviewers={interviewers} />)
   .add('Selected', () => <InterviewerList interviewers={interviewers} value={3} />)
   .add('Clickable', () => <InterviewerList interviewers={interviewers} onChange={action('setInterviewer')} />);
+
+storiesOf('Appointment', module)
+  .addParameters({
+    backgrounds: [{ name: 'white', value: '#fff', default: true }],
+  })
+  .add('Appointment', () => <Appointment />)
+  .add('Appointment with Time', () => <Appointment time={'12pm'} />);
