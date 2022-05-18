@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import './DayListItem.scss';
 
-export default function DayListItem({ name, spots, setDay, selected }) {
+const DayListItem = ({ name, spots, setDay, selected }) => {
   const dayClass = classNames('day-list__item', { 'day-list__item--selected': selected }, { 'day-list__item--full': !spots });
   const formatSpots = () => {
     if (spots === 0) {
@@ -20,4 +20,6 @@ export default function DayListItem({ name, spots, setDay, selected }) {
       <h3 className="text--light">{formatSpots()}</h3>
     </li>
   );
-}
+};
+
+export default DayListItem;
