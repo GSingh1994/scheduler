@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './InterviewerList.scss';
 import InterviewerListItem from './InterviewerListItem';
 
-const InterviewerList = ({ interviewers, interviewer, setInterviewer }) => {
-  // const [interviewer, setInterviewer] = useState(); //use id as state value
-
-  const displayListItems = interviewers.map((item) => (
-    <InterviewerListItem name={item.name} avatar={item.avatar} setInterviewer={() => setInterviewer(item.id)} selected={item.id === interviewer} />
+const InterviewerList = ({ interviewers, value, onChange }) => {
+  const displayListItems = interviewers.map((interviewer) => (
+    <InterviewerListItem
+      name={interviewer.name}
+      avatar={interviewer.avatar}
+      setInterviewer={() => onChange(interviewer.id)}
+      selected={interviewer.id === value}
+    />
   ));
 
   return (
