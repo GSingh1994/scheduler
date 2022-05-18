@@ -70,7 +70,12 @@ storiesOf('InterviewerListItem', module)
   .add('Unselected', () => <InterviewerListItem id={interviewer.id} name={interviewer.name} avatar={interviewer.avatar} />)
   .add('Selected', () => <InterviewerListItem id={interviewer.id} name={interviewer.name} avatar={interviewer.avatar} selected />)
   .add('Clickable', () => (
-    <InterviewerListItem id={interviewer.id} name={interviewer.name} avatar={interviewer.avatar} setInterviewer={action('setInterviewer')} />
+    <InterviewerListItem
+      id={interviewer.id}
+      name={interviewer.name}
+      avatar={interviewer.avatar}
+      setInterviewer={() => action('setInterviewer')(interviewer.id)}
+    />
   ));
 
 const interviewers = [
