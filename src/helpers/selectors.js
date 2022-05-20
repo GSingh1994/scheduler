@@ -1,12 +1,10 @@
-export default function getAppointmentsForDay(state, day) {
-  const getTodaysAppointments = () => {
-    const currentDay = state.days.filter((d) => d.name === day);
-    //edge case
-    if (!currentDay[0]) {
-      return [];
-    }
-    return currentDay[0].appointments;
-  };
+export function getAppointmentsForDay(state, day) {
+  const currentDay = state.days.find((d) => d.name === day);
+  if (!currentDay) return [];
+  return currentDay.appointments.map((appointment) => state.appointments[appointment]);
+}
 
-  return getTodaysAppointments().map((appointment) => state.appointments[appointment]);
+export function getInterview(state, interview) {
+  if (!interview) return null;
+  return { student: interview.student, interviewer: state.interviewers[interview.interviewer] };
 }
