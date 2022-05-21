@@ -5,16 +5,19 @@ const useVisualMode = (initial) => {
   const [history, setHistory] = useState([initial]);
 
   const transition = (newMode, replace = false) => {
-    if (!replace) {
-      setHistory((prev) => prev.splice(-1, newMode));
-    }
     setMode(newMode);
-    setHistory((prev) => [...prev, mode]);
+    if (replace) {
+      return setHistory((prev) => [...prev.slice(0, prev.length - 1), newMode]);
+    }
+    setHistory((prev) => [...prev, newMode]);
   };
 
   const back = () => {
-    const lastMode = history.pop();
-    setMode(lastMode);
+    if (history.length < 2) return;
+    const historyCopy = [...history];
+    historyCopy.pop();
+    setHistory(historyCopy);
+    setMode(historyCopy[historyCopy.length - 1]);
   };
 
   return { mode, transition, back };
