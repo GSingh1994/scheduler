@@ -6,7 +6,7 @@ import Empty from './Empty';
 import Form from './Form';
 import useVisualMode from 'hooks/useVisualMode';
 
-const Appointment = ({ time, id, interview }) => {
+const Appointment = ({ time, id, interview, interviewers }) => {
   const EMPTY = 'EMPTY';
   const SHOW = 'SHOW';
   const CREATE = 'CREATE';
@@ -18,7 +18,7 @@ const Appointment = ({ time, id, interview }) => {
       <Header time={time} id={id} />
       {mode === SHOW && <Show student={interview.student} interviewer={interview.interviewer} />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-      {mode === CREATE && <Form interviewers={[]} onCancel={back} />}
+      {mode === CREATE && <Form interviewers={interviewers} onCancel={back} />}
     </article>
   );
 };
