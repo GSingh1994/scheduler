@@ -5,6 +5,7 @@ import InterviewerListItem from './InterviewerListItem';
 const InterviewerList = ({ interviewers, value, onChange }) => {
   const displayListItems = interviewers.map((interviewer) => (
     <InterviewerListItem
+      key={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
       setInterviewer={() => onChange(interviewer.id)}
