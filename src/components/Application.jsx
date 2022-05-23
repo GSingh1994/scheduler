@@ -19,11 +19,16 @@ const Application = () => {
       ...state.appointments[id],
       interview: { ...interview },
     };
+
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
-    setState((prev) => ({ ...prev, appointments }));
+
+    // making put request to update our database and our state
+    return axios
+      .put(`/api/appointments/${id}`, { interview }) // prettier-ignore
+      .then(() => setState((prev) => ({ ...prev, appointments })));
   };
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
@@ -50,9 +55,9 @@ const Application = () => {
   //set initial state at first load
   useEffect(() => {
     Promise.all([
-      axios.get('http://localhost:8001/api/days'),
-      axios.get('http://localhost:8001/api/appointments'),
-      axios.get('http://localhost:8001/api/interviewers'),
+      axios.get('/api/days'), // prettier-ignore
+      axios.get('/api/appointments'),
+      axios.get('/api/interviewers'),
     ]).then((all) => {
       setState((prev) => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     });
