@@ -13,6 +13,7 @@ const Application = () => {
     interviewers: {},
   });
 
+  //update state after user books an interview
   const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
@@ -27,6 +28,7 @@ const Application = () => {
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
+  //get data from state and make list of all appointments for selected day
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     const interviewers = getInterviewersForDay(state, state.day);
@@ -42,8 +44,10 @@ const Application = () => {
     );
   });
 
+  //change day on the sidebar
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
 
+  //set initial state at first load
   useEffect(() => {
     Promise.all([
       axios.get('http://localhost:8001/api/days'),
