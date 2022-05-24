@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 const useApplicationData = () => {
   const [state, setState] = useState({
     day: 'Monday',
@@ -8,6 +7,19 @@ const useApplicationData = () => {
     appointments: {},
     interviewers: {},
   });
+
+  // count null appointments of given day
+  const countSpots = (appointments) => {
+    return state.days.map((day) => {
+      let count = 0;
+      day.appointments.forEach((appointmentID) => {
+        if (!appointments[appointmentID].interview) {
+          count += 1;
+        }
+      });
+      return { ...day, spots: count };
+    });
+  };
 
   //update state after user books an interview
   const bookInterview = (id, interview) => {
@@ -21,10 +33,13 @@ const useApplicationData = () => {
       [id]: appointment,
     };
 
+    //get new days array with updated spots
+    const updatedDays = countSpots(appointments);
+
     // making put request to update our database and our state
     return axios
       .put(`/api/appointments/${id}`, { interview }) // prettier-ignore
-      .then(() => setState((prev) => ({ ...prev, appointments })));
+      .then(() => setState(() => ({ ...state, appointments, days: updatedDays })));
   };
 
   const cancelInterview = (id, interview) => {
@@ -38,10 +53,13 @@ const useApplicationData = () => {
       [id]: appointment,
     };
 
+    //get new days array with updated spots
+    const updatedDays = countSpots(appointments);
+
     //removing interview from our database and state
     return axios
       .delete(`/api/appointments/${id}`, { interview }) // prettier-ignore
-      .then(() => setState((prev) => ({ ...prev, appointments })));
+      .then(() => setState((prev) => ({ ...prev, appointments, days: updatedDays })));
   };
 
   //change day on the sidebar
