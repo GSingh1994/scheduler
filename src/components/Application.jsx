@@ -31,6 +31,23 @@ const Application = () => {
       .then(() => setState((prev) => ({ ...prev, appointments })));
   };
 
+  const cancelInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    //removing interview from our database and state
+    return axios
+      .delete(`/api/appointments/${id}`, { interview }) // prettier-ignore
+      .then(() => setState((prev) => ({ ...prev, appointments })));
+  };
+
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   //get data from state and make list of all appointments for selected day
@@ -45,6 +62,7 @@ const Application = () => {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
@@ -59,7 +77,12 @@ const Application = () => {
       axios.get('/api/appointments'),
       axios.get('/api/interviewers'),
     ]).then((all) => {
-      setState((prev) => ({ ...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
+      setState((prev) => ({
+        ...prev, // prettier-ignore
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data,
+      }));
     });
   }, []);
 
