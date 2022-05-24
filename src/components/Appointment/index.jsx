@@ -6,6 +6,7 @@ import Empty from './Empty';
 import Form from './Form';
 import Status from './Status';
 import Confirm from './Confirm';
+import Error from './Error';
 import useVisualMode from 'hooks/useVisualMode';
 
 const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelInterview }) => {
@@ -16,6 +17,8 @@ const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelI
   const DELETING = 'DELETING';
   const CONFIRM = 'CONFIRM';
   const EDIT = 'EDIT';
+  const ERROR_SAVE = 'ERROR_SAVE';
+  const ERROR_DELETE = 'ERROR_DELETE';
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
@@ -25,12 +28,16 @@ const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelI
       interviewer,
     };
     transition(SAVING);
-    bookInterview(id, interview).then(() => transition(SHOW));
+    bookInterview(id, interview)
+      .then(() => transition(SHOW))
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
-  const onDelete = () => {
-    transition(DELETING);
-    cancelInterview(id, interview).then(() => transition(EMPTY));
+  const destroy = () => {
+    transition(DELETING, true);
+    cancelInterview(id, interview)
+      .then(() => transition(EMPTY))
+      .catch(() => transition(ERROR_DELETE, true));
   };
 
   const [currentInterview, setCurrentInterview] = useState({});
@@ -48,7 +55,9 @@ const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelI
       {mode === EDIT && <Form interviewers={interviewers} {...currentInterview} onCancel={back} onSave={save} />}
       {mode === SAVING && <Status message={'Saving'} />}
       {mode === DELETING && <Status message={'Deleting'} />}
-      {mode === CONFIRM && <Confirm message={'Deleting'} onConfirm={onDelete} onCancel={back} />}
+      {mode === CONFIRM && <Confirm message={'Deleting'} onConfirm={destroy} onCancel={back} />}
+      {mode === ERROR_SAVE && <Error message={'Error occured'} onClose={back} />}
+      {mode === ERROR_DELETE && <Error message={'Error occured'} onClose={back} />}
     </article>
   );
 };
