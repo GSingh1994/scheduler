@@ -12,7 +12,7 @@ const Show = ({ student, onEdit, onDelete, interviewer }) => {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <img onClick={onEdit} className="appointment__actions-button" src="images/edit.png" alt="Edit" />
+          <img onClick={() => onEdit(student, interviewer)} className="appointment__actions-button" src="images/edit.png" alt="Edit" />
           <img onClick={onDelete} className="appointment__actions-button" src="images/trash.png" alt="Delete" />
         </section>
       </section>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles.scss';
 import Header from './Header';
 import Show from './Show';
@@ -15,6 +15,7 @@ const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelI
   const SAVING = 'SAVING';
   const DELETING = 'DELETING';
   const CONFIRM = 'CONFIRM';
+  const EDIT = 'EDIT';
 
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
@@ -32,15 +33,22 @@ const Appointment = ({ time, id, interview, interviewers, bookInterview, cancelI
     cancelInterview(id, interview).then(() => transition(EMPTY));
   };
 
+  const [currentInterview, setCurrentInterview] = useState({});
+  const edit = (student, interviewer) => {
+    setCurrentInterview({ student, interviewer: interviewer.id });
+    transition(EDIT);
+  };
+
   return (
     <article className="appointment">
       <Header time={time} id={id} />
-      {mode === SHOW && <Show student={interview.student} interviewer={interview.interviewer} onDelete={() => transition(CONFIRM)} />}
+      {mode === SHOW && <Show student={interview.student} interviewer={interview.interviewer} onDelete={() => transition(CONFIRM)} onEdit={edit} />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE && <Form interviewers={interviewers} onCancel={back} onSave={save} />}
+      {mode === EDIT && <Form interviewers={interviewers} {...currentInterview} onCancel={back} onSave={save} />}
       {mode === SAVING && <Status message={'Saving'} />}
       {mode === DELETING && <Status message={'Deleting'} />}
-      {mode === CONFIRM && <Confirm message={'Deleting'} onConfirm={onDelete} />}
+      {mode === CONFIRM && <Confirm message={'Deleting'} onConfirm={onDelete} onCancel={back} />}
     </article>
   );
 };
