@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './InterviewerList.scss';
+import './styles/InterviewerList.scss';
 import InterviewerListItem from './InterviewerListItem';
 
 const InterviewerList = ({ interviewers, value, onChange }) => {

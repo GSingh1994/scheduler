@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import './DayListItem.scss';
+import './styles/DayListItem.scss';
 
 const DayListItem = ({ name, spots, setDay, selected }) => {
   const dayClass = classNames('day-list__item', { 'day-list__item--selected': selected }, { 'day-list__item--full': !spots });

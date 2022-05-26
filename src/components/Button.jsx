@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import 'components/Button.scss';
+import 'components/styles/Button.scss';
 
 const Button = ({ onClick, confirm, danger, disabled, children }) => {
   let buttonClass = classNames('button', { 'button--confirm': confirm }, { 'button--danger': danger });
